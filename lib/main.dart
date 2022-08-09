@@ -1,4 +1,9 @@
+import 'package:collect_deposit/expandable_fab.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+final formatCurrency =
+    NumberFormat.currency(locale: "de_DE", symbol: "€", decimalDigits: 2);
 
 void main() {
   runApp(const CollectDepositApp());
@@ -49,17 +54,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  double _deposit = 0.0;
+  final double _dailyGoal = 2.0;
 
-  void _incrementCounter() {
+  void _addDeposit() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
+      // _deposit without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter += 5;
+      _deposit += 0.25;
     });
+  }
+
+  void _showAction(BuildContext context, int index) {
+    const actionTitles = ['Pfand', 'Kasten', 'Anderes'];
+
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text(actionTitles[index]),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Schliessen'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -129,24 +154,42 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Text(
+                    'Tages Ziel: ${formatCurrency.format(_dailyGoal)}',
+                    style: Theme.of(context).textTheme.headline6,
+                  )),
+              Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Text(
                     'Heute gesammelt:',
                     style: Theme.of(context).textTheme.headline5,
                   )),
               Text(
-                '$_counter',
+                formatCurrency.format(_deposit),
                 style: Theme.of(context).textTheme.headline5,
               ),
             ],
           ),
         ),
         floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 50.0),
-            child: FloatingActionButton(
-              onPressed: _incrementCounter,
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
+            padding: const EdgeInsets.only(bottom: 20, right: 20),
+            child: ExpandableFab(
+              distance: 112.0,
+              children: [
+                ActionButton(
+                  onPressed: () => _showAction(context, 0),
+                  icon: const Icon(Icons.format_size),
+                ),
+                ActionButton(
+                  onPressed: () => _showAction(context, 1),
+                  icon: const Icon(Icons.insert_photo),
+                ),
+                ActionButton(
+                  onPressed: () => _showAction(context, 2),
+                  icon: const Icon(Icons.videocam),
+                ),
+              ],
             )),
         floatingActionButtonLocation: FloatingActionButtonLocation
             .centerDocked // This trailing comma makes auto-formatting nicer for build methods.
