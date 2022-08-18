@@ -2,6 +2,7 @@ import 'package:collect_deposit/shared/menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:collect_deposit/components/expandable_fab.dart';
 import 'package:collect_deposit/utils/utils.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -95,12 +96,20 @@ class _HomeScreenState extends State<HomeScreen> {
           title: const Text('Andere Summe'),
           content: SizedBox(
             width: MediaQuery.of(context).size.width * .7,
-            child: const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Summe',
-                ),
-                keyboardType: TextInputType.number),
+            child: TextField(
+              inputFormatters: [
+                CurrencyTextInputFormatter(
+                    locale: "de_DE", symbol: "€", decimalDigits: 2)
+              ],
+              keyboardType: TextInputType.number,
+              onSubmitted: (value) {
+                var formattedValue = value
+                    .replaceAll("€", "")
+                    .replaceAll(".", "")
+                    .replaceAll(",", ".");
+                _addDeposit(double.parse(formattedValue));
+              },
+            ),
           ),
           actions: [
             TextButton(
