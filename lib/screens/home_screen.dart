@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:collect_deposit/components/expandable_fab.dart';
 import 'package:collect_deposit/utils/utils.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -89,6 +90,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _showExtra(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
+
+    void _saveExtra() {
+      if (controller.text.isNotEmpty) {
+        _addDeposit(double.parse(controller.text
+            .replaceAll("€", "")
+            .replaceAll(".", "")
+            .replaceAll(",", ".")));
+      }
+    }
+
     showDialog<void>(
       context: context,
       builder: (context) {
@@ -97,23 +109,35 @@ class _HomeScreenState extends State<HomeScreen> {
           content: SizedBox(
             width: MediaQuery.of(context).size.width * .7,
             child: TextField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Summe eintippen',
+              ),
               inputFormatters: [
+                LengthLimitingTextInputFormatter(10),
                 CurrencyTextInputFormatter(
                     locale: "de_DE", symbol: "€", decimalDigits: 2)
               ],
               keyboardType: TextInputType.number,
+              controller: controller,
               onSubmitted: (value) {
-                var formattedValue = value
-                    .replaceAll("€", "")
-                    .replaceAll(".", "")
-                    .replaceAll(",", ".");
-                _addDeposit(double.parse(formattedValue));
+                _saveExtra();
+                controller.clear();
               },
             ),
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                _saveExtra();
+                controller.clear();
+              },
+              child: const Text('Hunzufügen'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               child: const Text('Schliessen'),
             ),
           ],
