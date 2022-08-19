@@ -154,24 +154,68 @@ class _HomeScreenState extends State<HomeScreen> {
           title: const Text('Pfand Sammler'),
         ),
         body: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                child: Center(
-                    child: Text(
-                  'Tages Ziel: ${formatCurrency.format(_dailyGoal)}',
-                  style: Theme.of(context).textTheme.headline6,
-                )),
-              ),
-              Expanded(
-                child: Center(
-                    child: Text(
-                  'Heute: ${formatCurrency.format(_deposit)}',
-                  style: Theme.of(context).textTheme.headline6,
-                )),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            _deposit >= _dailyGoal
+                                ? 'Tagesziel erreicht!'
+                                : 'Noch ein wenig bis zum Tagesziel',
+                            style: Theme.of(context).textTheme.subtitle2,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          'Tages Ziel: ${formatCurrency.format(_dailyGoal)}',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Heute: ${formatCurrency.format(_deposit)}',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'Monat: ${formatCurrency.format(0.0)}',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Ganze Zeit: ${formatCurrency.format(0.0)}',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
         floatingActionButton: Padding(
