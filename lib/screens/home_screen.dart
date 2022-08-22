@@ -4,6 +4,7 @@ import 'package:collect_deposit/components/expandable_fab.dart';
 import 'package:collect_deposit/utils/utils.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/services.dart';
+import 'package:confetti/confetti.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,11 +15,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   double _deposit = 0.0;
-  final double _dailyGoal = 2.0;
+  final double _dailyGoal = 1.0;
+  late ConfettiController _controllerCenter;
+  bool confettiShown = false;
+
+  @override
+  void initState() {
+    _controllerCenter =
+        ConfettiController(duration: const Duration(seconds: 5));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controllerCenter.dispose();
+    super.dispose();
+  }
 
   void _addDeposit(double price) {
     setState(() {
       _deposit += price;
+    });
+  }
+
+  void _checkConfetti() {
+    setState(() {
+      if (_deposit >= _dailyGoal && !confettiShown) {
+        _controllerCenter.play();
+        confettiShown = true;
+      }
     });
   }
 
@@ -32,8 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
           content: Text(actionTitles[index]),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Schließen'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _checkConfetti();
+              },
+              child: const Text('Schliessen'),
             ),
           ],
         );
@@ -80,7 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
               )),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _checkConfetti();
+              },
               child: const Text('Schliessen'),
             ),
           ],
@@ -137,6 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                _checkConfetti();
               },
               child: const Text('Schliessen'),
             ),
@@ -159,6 +191,25 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                ConfettiWidget(
+                  confettiController: _controllerCenter,
+                  blastDirectionality: BlastDirectionality.explosive,
+                  particleDrag: 0.05,
+                  emissionFrequency: 0.05,
+                  numberOfParticles: 5,
+                  gravity: 0.05,
+                  shouldLoop: false,
+                  minimumSize: const Size(8, 8),
+                  maximumSize: const Size(8, 8),
+                  colors: const [
+                    Colors.green,
+                    Colors.blue,
+                    Colors.pink,
+                    Colors.orange,
+                    Colors.purple,
+                    Colors.yellow
+                  ], // manually specify the colors to be used
+                ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Row(
