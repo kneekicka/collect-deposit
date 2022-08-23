@@ -5,6 +5,7 @@ import 'package:collect_deposit/utils/utils.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/services.dart';
 import 'package:confetti/confetti.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -32,10 +33,22 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.lightGreen,
+        textColor: Colors.white,
+        fontSize: 12.0);
+  }
+
   void _addDeposit(double price) {
     setState(() {
       _deposit += price;
     });
+    _showToast("${formatCurrency.format(price)} wurde hinzugefügt");
   }
 
   void _checkConfetti() {
@@ -43,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (_deposit >= _dailyGoal && !confettiShown) {
         _controllerCenter.play();
         confettiShown = true;
+        _showToast("Tagesziel erreicht! 🎉");
       }
     });
   }
