@@ -47,34 +47,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _showAction(BuildContext context, int index) {
-    const actionTitles = ['Pfand', 'Kasten', 'Anderes'];
-
+  _showBottle(BuildContext context) {
     showDialog<void>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          content: Text(actionTitles[index]),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _checkConfetti();
-              },
-              child: const Text('Schliessen'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  _showDeposit(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Pfand hinzufügen'),
+          title: const Text('Flaschenpfand'),
           content: SizedBox(
               width: MediaQuery.of(context).size.width * .7,
               child: GridView.count(
@@ -104,6 +82,96 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () => _addDeposit(0.02),
                     child: Text(formatCurrency.format(0.02)),
                   )
+                ],
+              )),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _checkConfetti();
+              },
+              child: const Text('Schliessen'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _showCrate(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Kastenpfand'),
+          content: SizedBox(
+              width: MediaQuery.of(context).size.width * .7,
+              child: GridView.count(
+                // Create a grid with 2 columns. If you change the scrollDirection to
+                // horizontal, this produces 2 rows.
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                children: [
+                  TextButton(
+                    onPressed: () => _addDeposit(1.50),
+                    child: Text(formatCurrency.format(1.50)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(2.30),
+                    child: Text(formatCurrency.format(2.30)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(2.38),
+                    child: Text(formatCurrency.format(2.38)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(2.40),
+                    child: Text(formatCurrency.format(2.40)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(2.46),
+                    child: Text(formatCurrency.format(2.46)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(2.78),
+                    child: Text(formatCurrency.format(2.78)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(3.00),
+                    child: Text(formatCurrency.format(3.00)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(3.10),
+                    child: Text(formatCurrency.format(3.10)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(3.30),
+                    child: Text(formatCurrency.format(3.30)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(3.42),
+                    child: Text(formatCurrency.format(3.42)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(3.66),
+                    child: Text(formatCurrency.format(3.66)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(3.90),
+                    child: Text(formatCurrency.format(3.90)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(4.50),
+                    child: Text(formatCurrency.format(4.50)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(5.10),
+                    child: Text(formatCurrency.format(5.10)),
+                  ),
+                  TextButton(
+                    onPressed: () => _addDeposit(6.00),
+                    child: Text(formatCurrency.format(6.00)),
+                  ),
                 ],
               )),
           actions: [
@@ -275,11 +343,11 @@ class _HomeScreenState extends State<HomeScreen> {
               distance: 112.0,
               children: [
                 ActionButton(
-                  onPressed: () => _showDeposit(context),
+                  onPressed: () => _showBottle(context),
                   icon: const Icon(Icons.format_size),
                 ),
                 ActionButton(
-                  onPressed: () => _showAction(context, 1),
+                  onPressed: () => _showCrate(context),
                   icon: const Icon(Icons.insert_photo),
                 ),
                 ActionButton(
