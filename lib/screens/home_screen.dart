@@ -112,12 +112,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 children: [
-                  for (final deposit in possibleDepositCrates)
+                  for (final deposit in getPossibleNotRepeatingDeposit())
                     TextButton(
-                      onPressed: () =>
-                          _addDeposit(deposit['fullCratePrice'] as double),
-                      child: Text(
-                          formatCurrency.format(deposit['fullCratePrice'])),
+                      onPressed: () => _addDeposit(deposit.fullCratePrice),
+                      child:
+                          Text(formatCurrency.format(deposit.fullCratePrice)),
                     )
                 ],
               )),
