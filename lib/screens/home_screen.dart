@@ -6,6 +6,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flutter/services.dart';
 import 'package:confetti/confetti.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:collect_deposit/data/deposit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 3,
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: Colors.green[400],
         textColor: Colors.white,
         fontSize: 12.0);
   }
@@ -76,26 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 // Generate 100 widgets that display their index in the List.
                 children: [
-                  TextButton(
-                    onPressed: () => _addDeposit(0.25),
-                    child: Text(formatCurrency.format(0.25)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(0.15),
-                    child: Text(formatCurrency.format(0.15)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(0.08),
-                    child: Text(formatCurrency.format(0.08)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(0.03),
-                    child: Text(formatCurrency.format(0.03)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(0.02),
-                    child: Text(formatCurrency.format(0.02)),
-                  )
+                  for (final deposit in possibleDeposits)
+                    TextButton(
+                      onPressed: () => _addDeposit(deposit),
+                      child: Text(formatCurrency.format(deposit)),
+                    )
                 ],
               )),
           actions: [
@@ -126,66 +112,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 children: [
-                  TextButton(
-                    onPressed: () => _addDeposit(1.50),
-                    child: Text(formatCurrency.format(1.50)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(2.30),
-                    child: Text(formatCurrency.format(2.30)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(2.38),
-                    child: Text(formatCurrency.format(2.38)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(2.40),
-                    child: Text(formatCurrency.format(2.40)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(2.46),
-                    child: Text(formatCurrency.format(2.46)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(2.78),
-                    child: Text(formatCurrency.format(2.78)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(3.00),
-                    child: Text(formatCurrency.format(3.00)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(3.10),
-                    child: Text(formatCurrency.format(3.10)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(3.30),
-                    child: Text(formatCurrency.format(3.30)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(3.42),
-                    child: Text(formatCurrency.format(3.42)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(3.66),
-                    child: Text(formatCurrency.format(3.66)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(3.90),
-                    child: Text(formatCurrency.format(3.90)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(4.50),
-                    child: Text(formatCurrency.format(4.50)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(5.10),
-                    child: Text(formatCurrency.format(5.10)),
-                  ),
-                  TextButton(
-                    onPressed: () => _addDeposit(6.00),
-                    child: Text(formatCurrency.format(6.00)),
-                  ),
+                  for (final deposit in possibleDepositCrates)
+                    TextButton(
+                      onPressed: () =>
+                          _addDeposit(deposit['fullCratePrice'] as double),
+                      child: Text(
+                          formatCurrency.format(deposit['fullCratePrice'])),
+                    )
                 ],
               )),
           actions: [
