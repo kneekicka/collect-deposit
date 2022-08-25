@@ -307,21 +307,51 @@ final List<Deposit> possibleDepositCrates = [
     bottlePrice: 0.15,
     cratePrice: 1.50,
   ),
+];
+
+final List<Deposit> possibleDeposits = [
   Deposit(
-    name: 'Dosen',
+    name: 'Einwegflaschen und –dosen',
     fullCratePrice: 0.00,
     bottlePrice: 0.25,
     cratePrice: 0.00,
   ),
+  Deposit(
+    name: 'Mehrweg(Glas oder PET), Saft oder Softdrinks, Bügel',
+    fullCratePrice: 0.00,
+    bottlePrice: 0.15,
+    cratePrice: 0.00,
+  ),
+  Deposit(
+    name: 'Mehrweg-Bier',
+    fullCratePrice: 0.00,
+    bottlePrice: 0.08,
+    cratePrice: 0.00,
+  ),
+  Deposit(
+    name: 'Wein',
+    fullCratePrice: 0.00,
+    bottlePrice: 0.03,
+    cratePrice: 0.00,
+  ),
+  Deposit(
+    name: 'Wein',
+    fullCratePrice: 0.00,
+    bottlePrice: 0.02,
+    cratePrice: 0.00,
+  ),
 ];
 
-final possibleDeposits = [0.25, 0.15, 0.08, 0.03, 0.02];
-
-List<Deposit> getPossibleNotRepeatingDeposit() {
+List<Deposit> getPossibleNotRepeatsDeposit() {
   List<Deposit> filteredList = possibleDepositCrates
       .where((deposit) => deposit.fullCratePrice > 0.00)
       .toSet()
       .toList();
   filteredList.sort((a, b) => a.fullCratePrice.compareTo(b.fullCratePrice));
   return filteredList;
+}
+
+List getBottlesAndCratesNoRepeats() {
+  var newList = [...possibleDeposits, ...getPossibleNotRepeatsDeposit()];
+  return newList;
 }

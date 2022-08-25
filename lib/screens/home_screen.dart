@@ -79,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   for (final deposit in possibleDeposits)
                     TextButton(
-                      onPressed: () => _addDeposit(deposit),
-                      child: Text(formatCurrency.format(deposit)),
+                      onPressed: () => _addDeposit(deposit.bottlePrice),
+                      child: Text(formatCurrency.format(deposit.bottlePrice)),
                     )
                 ],
               )),
@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 children: [
-                  for (final deposit in getPossibleNotRepeatingDeposit())
+                  for (final deposit in getPossibleNotRepeatsDeposit())
                     TextButton(
                       onPressed: () => _addDeposit(deposit.fullCratePrice),
                       child:
@@ -160,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10),
+                FilteringTextInputFormatter.digitsOnly,
                 CurrencyTextInputFormatter(
                     locale: "de_DE", symbol: "€", decimalDigits: 2)
               ],
