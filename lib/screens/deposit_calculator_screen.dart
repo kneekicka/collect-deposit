@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../shared/menu_drawer.dart';
 import 'package:collect_deposit/data/deposit.dart';
 import '../utils/utils.dart';
-import 'package:flutter/services.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 class DepositCalculatorScreen extends StatefulWidget {
   const DepositCalculatorScreen({Key? key}) : super(key: key);
@@ -13,20 +13,18 @@ class DepositCalculatorScreen extends StatefulWidget {
 }
 
 class _DepositCalculatorScreenState extends State<DepositCalculatorScreen> {
-  List<TextEditingController> counterController = [];
+  List<int> counterController = [];
   double totalSum = 0.00;
 
   @override
   void initState() {
     super.initState();
-    createControllers();
+    createCounters();
   }
 
   @override
   void dispose() {
-    for (var counter in counterController) {
-      counter.dispose();
-    }
+    counterController = [];
     super.dispose();
   }
 
@@ -68,19 +66,19 @@ class _DepositCalculatorScreenState extends State<DepositCalculatorScreen> {
         ]),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(10),
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              keyboardType: TextInputType.number,
-              controller: counterController[i],
-              onChanged: (value) {
-                _setCounter(i);
-              }),
+          child: NumberPicker(
+            value: counterController[i],
+            minValue: 0,
+            maxValue: 10000,
+            itemHeight: 25,
+            textStyle: const TextStyle(fontSize: 12),
+            selectedTextStyle:
+                const TextStyle(fontSize: 18, color: Colors.blueGrey),
+            onChanged: (value) {
+              setState(() => counterController[i] = value);
+              _setCounter();
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -90,22 +88,25 @@ class _DepositCalculatorScreenState extends State<DepositCalculatorScreen> {
         ),
       ]);
 
-  void createControllers() {
+  void createCounters() {
     for (int i = 0; i < getBottlesAndCratesNoRepeats().length; i++) {
-      counterController.add(TextEditingController(text: '0'));
+      counterController.add(0);
     }
   }
 
-  _setCounter(int counterIndex) {
+  _setCounter() {
     setState(() {
-      totalSum += _countSum(counterIndex);
+      totalSum = 0.0;
+      for (int i = 0; i < getBottlesAndCratesNoRepeats().length; i++) {
+        totalSum += _countSum(i);
+      }
     });
   }
 
   _countSum(int counterIndex) {
     return _getCorrectDepositPrice(
             getBottlesAndCratesNoRepeats()[counterIndex]) *
-        double.parse(counterController[counterIndex].text);
+        counterController[counterIndex];
   }
 
   _getCorrectDepositPrice(Deposit deposit) {
