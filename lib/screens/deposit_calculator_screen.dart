@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../shared/menu_drawer.dart';
 import 'package:collect_deposit/data/deposit.dart';
 import '../utils/utils.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -31,19 +30,33 @@ class _DepositCalculatorScreenState extends State<DepositCalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const MenuDrawer(),
-      appBar: AppBar(title: Text('Summe: ${formatCurrency.format(totalSum)}')),
       body: Container(
           margin: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 20.0),
           child: SingleChildScrollView(
               child: Column(
             children: [
-              Table(border: TableBorder.all(), children: [
-                for (int i = 0; i < getBottlesAndCratesNoRepeats().length; i++)
-                  buildCounter(i)
-              ]),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Table(border: TableBorder.all(), children: [
+                  for (int i = 0;
+                      i < getBottlesAndCratesNoRepeats().length;
+                      i++)
+                    buildCounter(i)
+                ]),
+              ),
             ],
           ))),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Container(
+          height: 40,
+          color: Colors.blueGrey,
+          child: Center(
+              child: Text('Summe ${formatCurrency.format(totalSum)}',
+                  style: const TextStyle(fontSize: 18, color: Colors.white))),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
