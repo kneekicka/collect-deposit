@@ -286,15 +286,15 @@ class _CollectorScreenState extends State<CollectorScreen> {
             children: [
               ActionButton(
                 onPressed: () => _showBottle(context),
-                icon: const Icon(Icons.format_size),
+                icon: const Icon(Icons.liquor),
               ),
               ActionButton(
                 onPressed: () => _showCrate(context),
-                icon: const Icon(Icons.insert_photo),
+                icon: const Icon(Icons.border_all),
               ),
               ActionButton(
                 onPressed: () => _showExtra(context),
-                icon: const Icon(Icons.videocam),
+                icon: const Icon(Icons.border_color),
               ),
             ],
           )),

@@ -52,7 +52,7 @@ class _DepositCalculatorScreenState extends State<DepositCalculatorScreen> {
           height: 40,
           color: Colors.blueGrey,
           child: Center(
-              child: Text('Summe ${formatCurrency.format(totalSum)}',
+              child: Text('Gesamt ${formatCurrency.format(totalSum)}',
                   style: const TextStyle(fontSize: 18, color: Colors.white))),
         ),
       ),
